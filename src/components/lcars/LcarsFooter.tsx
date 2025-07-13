@@ -4,7 +4,7 @@ const LcarsFooter = () => {
   return (
     <footer className="mt-8 p-4 border-t border-[#F1DF6F]/20">
       <div className="container mx-auto flex justify-between items-center text-[#F1DF6F]">
-        <div>StarPath v2.0.0</div>
+        <div>StarPath v2.0.1</div>
         <div>
           Developed by{' '}
           <a
