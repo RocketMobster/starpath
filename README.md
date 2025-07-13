@@ -1,62 +1,57 @@
 # StarPath - LCARS Travel Planner
 
-A Star Trek-inspired travel planning application built with Next.js, TypeScript, and TailwindCSS, featuring LCARS (Library Computer Access/Retrieval System) styling.
+![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
+
+A Star Trek-inspired travel planning application featuring the iconic LCARS (Library Computer Access/Retrieval System) interface. StarPath helps you navigate through Federation space and beyond, providing detailed information about destinations, travel routes, and facilities across the galaxy.
 
 ## Features
 
-- LCARS-inspired user interface
-- Responsive design
-- Interactive travel planning components
-- Modern web technologies
+🌍 **Comprehensive Destination Database**
 
-## Tech Stack
+- 27+ locations including planets, starbases, and outposts
+- Detailed information about climate, population, and amenities
+- Federation status tracking and travel advisories
 
-- Next.js 14 with App Router
-- TypeScript
-- TailwindCSS
-- React
+🔍 **Advanced Search Capabilities**
 
-## Getting Started
+- Filter by destination type, climate, or Federation status
+- Search across multiple quadrants
+- Distance calculations in light years
 
-First, run the development server:
+🎨 **Authentic LCARS Interface**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- True to Star Trek's aesthetic
+- Intuitive navigation
+- Responsive design for all devices
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Screenshots
 
-## Project Structure
+[Coming Soon]
 
-- `src/app` - Next.js App Router pages
-- `src/components/lcars` - LCARS UI components
-- `public` - Static assets
-- `src/styles` - Global styles and TailwindCSS configuration
+## About
 
-## Development
+StarPath is an interactive travel planner that brings the Star Trek universe to life through authentic LCARS styling and comprehensive destination information. Whether you're planning a shore leave on Risa or coordinating a diplomatic mission to Qo'noS, StarPath provides all the information you need.
 
-The project uses modern web development practices and follows the Next.js App Router architecture. To get started with development:
+## Roadmap
 
-1. Make changes to components in `src/components/lcars`
-2. Update pages in `src/app`
-3. The page auto-updates as you edit the files
+- Interactive star charts
+- Warp speed travel time calculations
+- Trip itinerary planning
+- Real-time alerts system
+- Resource management tools
 
-## Learn More
+## Contributing
 
-To learn more about the technologies used:
+Interested in contributing to StarPath? Check out our [Contributing Guide](CONTRIBUTING.md) for setup instructions and development guidelines.
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [TailwindCSS Documentation](https://tailwindcss.com/docs)
-- [TypeScript Documentation](https://www.typescriptlang.org/docs)
+## License
 
-## Deployment
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new) from the creators of Next.js.
+## Contact
 
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Developed by [@your-username](https://github.com/your-username)
+
+---
+
+*"Space: the final frontier..."* 🚀✨
