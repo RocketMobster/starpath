@@ -2,6 +2,7 @@ import React from 'react';
 import { Destination } from '@/types/destination';
 import LcarsPanel from '../lcars/LcarsPanel';
 import LcarsButton from '../lcars/LcarsButton';
+import WarpCalculator from './WarpCalculator';
 
 interface DestinationDetailProps {
   destination: Destination;
@@ -25,71 +26,65 @@ const DestinationDetail: React.FC<DestinationDetailProps> = ({
                 {destination.type} • {destination.quadrant}
               </p>
             </div>
-            <LcarsButton onClick={onClose} variant="danger">
+            <LcarsButton onClick={onClose} color="danger">
               Close
             </LcarsButton>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-lcars-purple text-lg mb-2">Location Details</h3>
-              <div className="space-y-2">
-                <p>
-                  <span className="text-lcars-blue">Sector:</span> {destination.sector}
-                </p>
-                <p>
-                  <span className="text-lcars-blue">System:</span> {destination.system}
-                </p>
-                <p>
-                  <span className="text-lcars-blue">Distance:</span> {destination.distance}{' '}
-                  light years
-                </p>
+          <div className="grid grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="text-lcars-orange text-lg mb-2">Location Details</h3>
+                <div className="space-y-2 text-lcars-cream">
+                  <p>
+                    <span className="text-lcars-blue">Sector:</span> {destination.sector}
+                  </p>
+                  <p>
+                    <span className="text-lcars-blue">System:</span> {destination.system}
+                  </p>
+                  <p>
+                    <span className="text-lcars-blue">Distance:</span> {destination.distance}{' '}
+                    light years
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lcars-orange text-lg mb-2">Population & Government</h3>
+                <div className="space-y-2 text-lcars-cream">
+                  <p>
+                    <span className="text-lcars-blue">Population:</span> {destination.population}
+                  </p>
+                  <p>
+                    <span className="text-lcars-blue">Species:</span>{' '}
+                    {destination.species.join(', ')}
+                  </p>
+                  <p>
+                    <span className="text-lcars-blue">Government:</span>{' '}
+                    {destination.government}
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div>
-              <h3 className="text-lcars-purple text-lg mb-2">Civilization</h3>
-              <div className="space-y-2">
-                <p>
-                  <span className="text-lcars-blue">Population:</span> {destination.population}
-                </p>
-                <p>
-                  <span className="text-lcars-blue">Species:</span>{' '}
-                  {destination.species.join(', ')}
-                </p>
-                <p>
-                  <span className="text-lcars-blue">Government:</span> {destination.government}
-                </p>
-              </div>
+            <div className="border-t border-lcars-orange/20 pt-4">
+              <WarpCalculator
+                distanceInLightYears={destination.distance}
+                destinationName={destination.name}
+              />
             </div>
 
-            <div className="md:col-span-2">
-              <h3 className="text-lcars-purple text-lg mb-2">Notable Features</h3>
+            <div className="border-t border-lcars-orange/20 pt-4">
+              <h3 className="text-lcars-orange text-lg mb-2">About</h3>
               <p className="text-lcars-cream">{destination.description}</p>
             </div>
 
-            <div className="md:col-span-2">
-              <h3 className="text-lcars-purple text-lg mb-2">Travel Advisory</h3>
-              <div className="space-y-2">
-                <p>
-                  <span className="text-lcars-blue">Climate:</span> {destination.climate}
-                </p>
-                <p>
-                  <span className="text-lcars-blue">Hazards:</span> {destination.hazards}
-                </p>
-                <p>
-                  <span className="text-lcars-blue">Required Clearance:</span>{' '}
-                  {destination.clearanceLevel}
-                </p>
-              </div>
-            </div>
-
             {destination.attractions && (
-              <div className="md:col-span-2">
-                <h3 className="text-lcars-purple text-lg mb-2">Points of Interest</h3>
-                <ul className="list-disc list-inside space-y-1 text-lcars-cream">
-                  {destination.attractions.map((attraction, index) => (
-                    <li key={index}>{attraction}</li>
+              <div className="border-t border-lcars-orange/20 pt-4">
+                <h3 className="text-lcars-orange text-lg mb-2">Notable Attractions</h3>
+                <ul className="list-disc list-inside text-lcars-cream">
+                  {destination.attractions.map((attraction) => (
+                    <li key={attraction}>{attraction}</li>
                   ))}
                 </ul>
               </div>
