@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.0.2] - 2025-07-12
+
+### Changed
+- Centralized version management in utils/version.ts
+- Added npm version scripts for automated version management
+
 ## [2.0.1] - 2025-07-12
 
 ### Fixed
