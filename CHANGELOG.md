@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1] - 2025-07-12
+
+### Fixed
+- Search functionality not triggering on form submission
+- Filter application not working properly
+- Filter values mismatching with destination data
+- Added proper type handling for search filters
+
 ## [2.0.0] - 2025-07-12
 
 ### Added
