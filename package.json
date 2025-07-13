@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "preversion": "git add CHANGELOG.md",
+    "version": "git add -A",
+    "postversion": "git push && git push --tags"
   },
   "dependencies": {
     "next": "14.0.4",
