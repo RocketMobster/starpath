@@ -1,0 +1,123 @@
+'use client';
+
+import { useState } from 'react';
+import { SearchFilters } from '@/types/destination';
+import LcarsPanel from '../lcars/LcarsPanel';
+import LcarsButton from '../lcars/LcarsButton';
+
+interface DestinationSearchProps {
+  onSearch: (query: string, filters: SearchFilters) => void;
+}
+
+const DESTINATION_TYPES = ['planet', 'station', 'starbase', 'colony', 'outpost'];
+const CLIMATES = ['temperate', 'desert', 'tropical', 'arctic', 'volcanic', 'terraformed'];
+const CLEARANCE_LEVELS = ['none', 'restricted', 'classified', 'top secret'];
+
+export default function DestinationSearch({ onSearch }: DestinationSearchProps) {
+  const [query, setQuery] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState<SearchFilters>({
+    type: '',
+    climate: '',
+    clearanceLevel: ''
+  });
+
+  const handleSearch = (e?: React.FormEvent) => {
+    e?.preventDefault();
+    onSearch(query, filters);
+  };
+
+  const handleFilterChange = (key: keyof SearchFilters, value: string) => {
+    setFilters(prev => ({
+      ...prev,
+      [key]: value === prev[key] ? '' : value // Toggle filter if it's the same value
+    }));
+  };
+
+  return (
+    <form onSubmit={handleSearch} className="w-full">
+      <LcarsPanel className="p-4 space-y-4">
+        <div className="flex gap-4">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="flex-1 bg-black border-2 border-lcars-orange rounded-lg px-4 py-2 text-white placeholder-lcars-orange/50 focus:outline-none focus:border-lcars-orange-light"
+            placeholder="Search destinations..."
+          />
+          <LcarsButton color="primary">Search</LcarsButton>
+          <LcarsButton 
+            onClick={() => setShowFilters(!showFilters)} 
+            color="secondary"
+          >
+            {showFilters ? 'Hide Filters' : 'Show Filters'}
+          </LcarsButton>
+        </div>
+
+        {showFilters && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+            <div className="space-y-2">
+              <h3 className="text-lcars-orange font-bold">Type</h3>
+              <div className="space-y-1">
+                {DESTINATION_TYPES.map(type => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => handleFilterChange('type', type)}
+                    className={`block w-full text-left px-3 py-1 rounded ${
+                      filters.type === type 
+                        ? 'bg-lcars-orange text-black' 
+                        : 'text-lcars-orange hover:bg-lcars-orange/20'
+                    }`}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-lcars-orange font-bold">Climate</h3>
+              <div className="space-y-1">
+                {CLIMATES.map(climate => (
+                  <button
+                    key={climate}
+                    type="button"
+                    onClick={() => handleFilterChange('climate', climate)}
+                    className={`block w-full text-left px-3 py-1 rounded ${
+                      filters.climate === climate 
+                        ? 'bg-lcars-orange text-black' 
+                        : 'text-lcars-orange hover:bg-lcars-orange/20'
+                    }`}
+                  >
+                    {climate}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-lcars-orange font-bold">Clearance Level</h3>
+              <div className="space-y-1">
+                {CLEARANCE_LEVELS.map(level => (
+                  <button
+                    key={level}
+                    type="button"
+                    onClick={() => handleFilterChange('clearanceLevel', level)}
+                    className={`block w-full text-left px-3 py-1 rounded ${
+                      filters.clearanceLevel === level 
+                        ? 'bg-lcars-orange text-black' 
+                        : 'text-lcars-orange hover:bg-lcars-orange/20'
+                    }`}
+                  >
+                    {level}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </LcarsPanel>
+    </form>
+  );
+}

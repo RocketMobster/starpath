@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import LcarsFooter from "@/components/lcars/LcarsFooter";
 
-const geist = Geist({
+const inter = Inter({
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geist.className} min-h-screen bg-black text-white antialiased flex flex-col`}>
+      <body className={`${inter.className} min-h-screen bg-black text-white antialiased flex flex-col`}>
         <main className="flex-1">{children}</main>
         <LcarsFooter />
       </body>

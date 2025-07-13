@@ -13,23 +13,23 @@ export interface Coordinates {
 export interface Destination {
   id: string;
   name: string;
-  type: DestinationType;
-  climate: Climate;
-  population: number;
-  federationStatus: FederationStatus;
-  coordinates: Coordinates;
+  type: string;
+  quadrant: string;
+  sector: string;
+  system: string;
+  distance: number;
+  population: string;
+  species: string[];
+  government: string;
   description: string;
-  amenities: string[];
-  warnings?: string[];
-  lastVisited?: string; // Stardate
-  image?: string; // URL to destination image
+  climate: string;
+  hazards: string;
+  clearanceLevel: string;
+  attractions?: string[];
 }
 
 export interface SearchFilters {
-  type?: DestinationType[];
-  climate?: Climate[];
-  federationStatus?: FederationStatus[];
-  quadrant?: Coordinates['quadrant'][];
-  maxDistance?: number; // in light years
-  hasWarnings?: boolean;
+  type: string;
+  climate: string;
+  clearanceLevel: string;
 }
