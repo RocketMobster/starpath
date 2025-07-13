@@ -6,7 +6,7 @@ This document contains information for developers who want to contribute to or r
 
 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/starpath.git
+git clone https://github.com/RocketMobster/starpath.git
 cd starpath
 ```
 

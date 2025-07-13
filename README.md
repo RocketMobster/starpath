@@ -50,7 +50,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-Developed by [@your-username](https://github.com/your-username)
+Developed by [RocketMobster](https://github.com/your-username)
 
 ---
 

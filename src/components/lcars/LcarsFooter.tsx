@@ -8,12 +8,12 @@ const LcarsFooter = () => {
         <div>
           Developed by{' '}
           <a
-            href="https://github.com/your-username"
+            href="https://github.com/RocketMobster"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#FF9C00] hover:text-[#F1DF6F] transition-colors"
           >
-            @your-username
+            @RocketMobster
           </a>
         </div>
       </div>
