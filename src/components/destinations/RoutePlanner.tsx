@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Destination, SearchFilters } from '@/types/destination';
 import { calculateWarpTravelTime, formatTravelTime } from '@/utils/warpCalculations';
 import { calculateDistance } from '@/utils/coordinates';
@@ -17,13 +17,29 @@ export default function RoutePlanner({ defaultDestination }: RoutePlannerProps) 
   const [warpFactor, setWarpFactor] = useState(5);
   const [originSearchResults, setOriginSearchResults] = useState<Destination[]>([]);
   const [destinationSearchResults, setDestinationSearchResults] = useState<Destination[]>([]);
+  
+  // Refs to control filter visibility
+  const originFiltersRef = useRef<(show: boolean) => void>(() => {});
+  const destinationFiltersRef = useRef<(show: boolean) => void>(() => {});
 
   const handleOriginSearch = (query: string, filters: SearchFilters) => {
+    if (filters._skipSearch) {
+      // If _skipSearch is true, just clear the results without searching
+      setOriginSearchResults([]);
+      return;
+    }
+    
     const results = searchDestinations(query, filters);
     setOriginSearchResults(results);
   };
 
   const handleDestinationSearch = (query: string, filters: SearchFilters) => {
+    if (filters._skipSearch) {
+      // If _skipSearch is true, just clear the results without searching
+      setDestinationSearchResults([]);
+      return;
+    }
+    
     const results = searchDestinations(query, filters);
     setDestinationSearchResults(results);
   };
@@ -35,6 +51,9 @@ export default function RoutePlanner({ defaultDestination }: RoutePlannerProps) 
     }
     setOrigin(selected);
     setOriginSearchResults([]);
+    
+    // Close origin filters after selection
+    originFiltersRef.current(false);
   };
 
   const handleDestinationSelect = (selected: Destination) => {
@@ -44,6 +63,9 @@ export default function RoutePlanner({ defaultDestination }: RoutePlannerProps) 
     }
     setDestination(selected);
     setDestinationSearchResults([]);
+    
+    // Close destination filters after selection
+    destinationFiltersRef.current(false);
   };
 
   const handleWarpFactorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,6 +109,7 @@ export default function RoutePlanner({ defaultDestination }: RoutePlannerProps) 
             onSearch={handleOriginSearch}
             onDestinationSelect={handleOriginSelect}
             placeholder="Search for origin..."
+            showFiltersRef={originFiltersRef}
           />
           {origin && (
             <div className="bg-black/30 p-4 rounded-lg border border-lcars-orange/30">
@@ -107,7 +130,7 @@ export default function RoutePlanner({ defaultDestination }: RoutePlannerProps) 
           )}
           {originSearchResults.length > 0 && !origin && (
             <div className="bg-black/30 border border-lcars-orange/30 rounded-lg">
-              <div className="max-h-60 overflow-y-auto">
+              <div className="max-h-60 overflow-y-auto lcars-scrollbar">
                 {originSearchResults.map(result => (
                   <div
                     key={result.id}
@@ -123,10 +146,10 @@ export default function RoutePlanner({ defaultDestination }: RoutePlannerProps) 
           )}
         </div>
 
-        {/* Swap Button - Positioned in the middle */}
+        {/* Swap Button - Fixed position that doesn't move with filter toggles */}
         <button
           onClick={handleSwapLocations}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:block hidden bg-lcars-orange/20 hover:bg-lcars-orange/30 text-lcars-orange p-2 rounded-full border border-lcars-orange/50 transition-colors"
+          className="absolute left-1/2 md:top-20 -translate-x-1/2 md:block hidden bg-lcars-orange/20 hover:bg-lcars-orange/30 text-lcars-orange p-2 rounded-full border border-lcars-orange/50 transition-colors"
           title="Swap origin and destination"
         >
           ⇄
@@ -139,6 +162,7 @@ export default function RoutePlanner({ defaultDestination }: RoutePlannerProps) 
             onSearch={handleDestinationSearch}
             onDestinationSelect={handleDestinationSelect}
             placeholder="Search for destination..."
+            showFiltersRef={destinationFiltersRef}
           />
           {destination && (
             <div className="bg-black/30 p-4 rounded-lg border border-lcars-orange/30">
@@ -159,7 +183,7 @@ export default function RoutePlanner({ defaultDestination }: RoutePlannerProps) 
           )}
           {destinationSearchResults.length > 0 && !destination && (
             <div className="bg-black/30 border border-lcars-orange/30 rounded-lg">
-              <div className="max-h-60 overflow-y-auto">
+              <div className="max-h-60 overflow-y-auto lcars-scrollbar">
                 {destinationSearchResults.map(result => (
                   <div
                     key={result.id}
