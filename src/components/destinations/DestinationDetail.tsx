@@ -14,8 +14,8 @@ const DestinationDetail: React.FC<DestinationDetailProps> = ({
   onClose,
 }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-black w-full max-w-4xl rounded-lg overflow-hidden">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-black w-full max-w-4xl rounded-lg overflow-hidden border border-lcars-orange/50">
         <LcarsPanel className="p-6">
           <div className="flex justify-between items-start mb-6">
             <div>

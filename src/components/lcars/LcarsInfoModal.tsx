@@ -14,17 +14,19 @@ export default function LcarsInfoModal({ isOpen, onClose, title, children }: Lca
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/80">
-      <LcarsPanel className="w-full max-w-2xl">
-        <div className="p-6 space-y-4">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold text-lcars-orange">{title}</h2>
-            <LcarsButton onClick={onClose} color="secondary">Close</LcarsButton>
+      <div className="w-full max-w-2xl border border-lcars-orange/50 rounded-lg overflow-hidden">
+        <LcarsPanel>
+          <div className="p-6 space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-lcars-orange">{title}</h2>
+              <LcarsButton onClick={onClose} color="secondary">Close</LcarsButton>
+            </div>
+            <div className="text-lcars-cream space-y-4">
+              {children}
+            </div>
           </div>
-          <div className="text-lcars-cream space-y-4">
-            {children}
-          </div>
-        </div>
-      </LcarsPanel>
+        </LcarsPanel>
+      </div>
     </div>
   );
 }

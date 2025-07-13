@@ -1,3 +1,5 @@
+import { calculateArrivalInfo, stardateToDate } from './stardate';
+
 // Speed of light in kilometers per second
 const C = 299792.458;
 
@@ -6,6 +8,10 @@ export interface WarpCalculationResult {
   timeInDays: number;
   velocity: number; // km/s
   coefficient: number;
+  departureStardate?: number;
+  arrivalStardate?: number;
+  departureEarthDate?: Date;
+  arrivalEarthDate?: Date;
 }
 
 /**
@@ -24,12 +30,17 @@ export function calculateWarpVelocity(warpFactor: number): number {
 }
 
 /**
- * Calculates travel time at warp speed
+ * Calculates travel time and ETA at warp speed
  * @param distanceInLightYears Distance in light years
  * @param warpFactor Warp factor (1-9.99)
- * @returns Object containing travel time in hours and days, velocity, and warp coefficient
+ * @param departureStardate Optional departure stardate
+ * @returns Object containing travel times, velocity, and ETAs if departure provided
  */
-export function calculateWarpTravelTime(distanceInLightYears: number, warpFactor: number): WarpCalculationResult {
+export function calculateWarpTravelTime(
+  distanceInLightYears: number, 
+  warpFactor: number,
+  departureStardate?: number
+): WarpCalculationResult {
   const velocity = calculateWarpVelocity(warpFactor);
   const coefficient = Math.pow(warpFactor, 10/3);
   
@@ -43,18 +54,33 @@ export function calculateWarpTravelTime(distanceInLightYears: number, warpFactor
   const timeInHours = timeInSeconds / 3600;
   const timeInDays = timeInHours / 24;
   
-  return {
+  const result: WarpCalculationResult = {
     timeInHours,
     timeInDays,
     velocity,
     coefficient
   };
+
+  // Calculate arrival time if departure time is provided
+  if (departureStardate) {
+    const { stardate: arrivalStardate, earthDate: arrivalEarthDate } = calculateArrivalInfo(departureStardate, timeInDays);
+    result.departureStardate = departureStardate;
+    result.arrivalStardate = arrivalStardate;
+    result.departureEarthDate = stardateToDate(departureStardate);
+    result.arrivalEarthDate = arrivalEarthDate;
+  }
+  
+  return result;
 }
 
 /**
  * Formats travel time into a human-readable string
  */
 export function formatTravelTime(time: WarpCalculationResult): string {
+  if (time.timeInDays >= 365) {
+    const years = time.timeInDays / 365;
+    return `${time.timeInDays.toFixed(1)} days (${years.toFixed(1)} years)`;
+  }
   if (time.timeInDays >= 1) {
     return `${time.timeInDays.toFixed(1)} days`;
   }

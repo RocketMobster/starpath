@@ -1,19 +1,25 @@
 'use client';
 
 import { useState } from 'react';
-import { SearchFilters } from '@/types/destination';
+import { Destination, SearchFilters } from '@/types/destination';
 import LcarsPanel from '../lcars/LcarsPanel';
 import LcarsButton from '../lcars/LcarsButton';
 
 interface DestinationSearchProps {
   onSearch: (query: string, filters: SearchFilters) => void;
+  onDestinationSelect?: (destination: Destination) => void;
+  placeholder?: string;
 }
 
 const DESTINATION_TYPES = ['planet', 'station', 'starbase', 'colony', 'outpost'];
 const CLIMATES = ['temperate', 'desert', 'tropical', 'arctic', 'volcanic', 'terraformed'];
 const CLEARANCE_LEVELS = ['none', 'restricted', 'classified', 'top secret'];
 
-export default function DestinationSearch({ onSearch }: DestinationSearchProps) {
+export default function DestinationSearch({ 
+  onSearch, 
+  onDestinationSelect,
+  placeholder = "Search destinations..." 
+}: DestinationSearchProps) {
   const [query, setQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState<SearchFilters>({
@@ -62,7 +68,7 @@ export default function DestinationSearch({ onSearch }: DestinationSearchProps) 
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="flex-1 bg-black border-2 border-lcars-orange rounded-lg px-4 py-2 text-white placeholder-lcars-orange/50 focus:outline-none focus:border-lcars-orange-light"
-            placeholder="Search destinations..."
+            placeholder={placeholder}
           />
           <LcarsButton 
             type="submit"

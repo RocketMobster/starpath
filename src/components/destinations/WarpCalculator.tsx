@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import LcarsPanel from '../lcars/LcarsPanel';
 import LcarsButton from '../lcars/LcarsButton';
 import LcarsInfoModal from '../lcars/LcarsInfoModal';
+import DepartureTimeSelector from './DepartureTimeSelector';
 import { calculateWarpTravelTime, formatTravelTime } from '@/utils/warpCalculations';
+import { formatStardate } from '@/utils/stardate';
 
 const C = 299792.458; // Speed of light in km/s
 
@@ -13,6 +15,7 @@ interface WarpCalculatorProps {
 
 export default function WarpCalculator({ distanceInLightYears, destinationName }: WarpCalculatorProps) {
   const [warpFactor, setWarpFactor] = useState(5);
+  const [departureStardate, setDepartureStardate] = useState<number | undefined>();
   const [isInfoOpen, setIsInfoOpen] = useState(false);
 
   const handleWarpChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +25,11 @@ export default function WarpCalculator({ distanceInLightYears, destinationName }
     }
   };
 
-  const travelTime = calculateWarpTravelTime(distanceInLightYears, warpFactor);
+  const handleDepartureChange = (stardate: number) => {
+    setDepartureStardate(stardate);
+  };
+
+  const travelTime = calculateWarpTravelTime(distanceInLightYears, warpFactor, departureStardate);
   const formattedTime = formatTravelTime(travelTime);
 
   return (
@@ -38,61 +45,65 @@ export default function WarpCalculator({ distanceInLightYears, destinationName }
         </LcarsButton>
       </div>
 
-      <div className="flex items-center gap-4">
-        <label className="text-lcars-cream">
-          Warp Factor:
-          <input
-            type="number"
-            value={warpFactor}
-            onChange={handleWarpChange}
-            min="1"
-            max="9.99"
-            step="0.1"
-            className="ml-2 bg-black border-2 border-lcars-orange rounded px-2 py-1 w-24 text-lcars-orange"
-          />
-        </label>
-        <div className="text-lcars-cream">
-          Estimated travel time to <span className="text-lcars-orange">{destinationName}</span>:{' '}
-          <span className="text-lcars-blue">{formattedTime}</span>
+      <div className="space-y-4">
+        <div className="flex items-center gap-4">
+          <label className="text-lcars-cream">
+            Warp Factor:
+            <input
+              type="number"
+              value={warpFactor}
+              onChange={handleWarpChange}
+              min="1"
+              max="9.99"
+              step="0.1"
+              className="ml-2 bg-black border border-lcars-orange/50 text-lcars-cream p-2 rounded w-24"
+            />
+          </label>
+          <span className="text-lcars-cream">
+            ({(travelTime.coefficient * C).toFixed(0)} km/s)
+          </span>
+        </div>
+
+        <DepartureTimeSelector onStardateChange={handleDepartureChange} />
+
+        <div className="bg-black/30 p-4 rounded-lg border border-lcars-orange/30">
+          <h4 className="text-lcars-orange mb-2">Journey Summary</h4>
+          <div className="space-y-2 text-lcars-cream">
+            <p>Distance: {distanceInLightYears.toFixed(2)} light years</p>
+            <p>Travel time: {formattedTime}</p>
+            {departureStardate && travelTime.arrivalStardate && (
+              <>
+                <p>Departure: Stardate {formatStardate(departureStardate)}</p>
+                <p>Arrival: Stardate {formatStardate(travelTime.arrivalStardate)}</p>
+                <p className="text-sm text-lcars-blue">
+                  Arrival (Earth Calendar): {travelTime.arrivalEarthDate?.toLocaleDateString()} {travelTime.arrivalEarthDate?.toLocaleTimeString()}
+                </p>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
       <LcarsInfoModal
         isOpen={isInfoOpen}
         onClose={() => setIsInfoOpen(false)}
-        title="Warp Speed Technical Information"
+        title="Warp Speed Calculator"
       >
         <div className="space-y-4">
           <p>
-            The TNG Warp Scale, developed for Star Trek: The Next Generation,
-            uses a modified formula to calculate faster-than-light travel speeds:
+            This calculator uses the TNG-era warp scale formula to determine travel times
+            to {destinationName}. The formula accounts for the exponential nature of warp
+            travel, where velocity = warp_factor^(10/3) * c.
           </p>
-          
-          <div className="bg-black/50 p-4 rounded-lg font-mono">
-            v = w^(10/3) * c
-          </div>
-          
-          <p>Where:</p>
-          <ul className="list-disc list-inside space-y-2">
-            <li>v = velocity</li>
-            <li>w = warp factor</li>
-            <li>c = speed of light (299,792.458 km/s)</li>
-          </ul>
-
           <p>
-            This formula creates a more gradual acceleration curve than the
-            Original Series&apos; cubic formula, making high-warp travel more
-            realistic within the Star Trek universe.
+            Enter a warp factor between 1 and 9.99 to calculate your travel time. Higher
+            warp factors dramatically reduce travel time but require substantially more
+            power.
           </p>
-
-          <div className="bg-black/50 p-4 rounded-lg">
-            <p className="text-lcars-orange">Current Calculations:</p>
-            <ul className="list-none space-y-1 text-lcars-blue">
-              <li>Warp Factor: {warpFactor}</li>
-              <li>Velocity: {(travelTime.velocity / C).toFixed(2)}c</li>
-              <li>Warp Coefficient: {travelTime.coefficient.toFixed(2)}</li>
-            </ul>
-          </div>
+          <p>
+            Optional: Set a departure time to calculate your estimated time of arrival
+            in both Earth calendar and Stardate formats.
+          </p>
         </div>
       </LcarsInfoModal>
     </div>

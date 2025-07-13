@@ -7,12 +7,15 @@ import LcarsButton from "@/components/lcars/LcarsButton";
 import DestinationSearch from "@/components/destinations/DestinationSearch";
 import DestinationList from "@/components/destinations/DestinationList";
 import DestinationDetail from "@/components/destinations/DestinationDetail";
-import { searchDestinations } from "@/data/destinations";
+import RoutePlanner from "@/components/destinations/RoutePlanner";
+import { searchDestinations, getRecentDestinations } from "@/data/destinations";
 import { Destination, SearchFilters } from "@/types/destination";
 
 export default function Home() {
   const [searchResults, setSearchResults] = useState<Destination[]>([]);
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
+  const [showRoutePlanner, setShowRoutePlanner] = useState(false);
+  const recentDestinations = getRecentDestinations();
 
   const handleSearch = (query: string, filters: SearchFilters) => {
     const results = searchDestinations(query, filters);
@@ -20,10 +23,18 @@ export default function Home() {
   };
 
   const handleDestinationSelect = (destination: Destination) => {
+    if (showRoutePlanner) {
+      setShowRoutePlanner(false);
+    }
     setSelectedDestination(destination);
   };
 
   const handleCloseDetail = () => {
+    setSelectedDestination(null);
+  };
+
+  const handlePlanRoute = () => {
+    setShowRoutePlanner(true);
     setSelectedDestination(null);
   };
 
@@ -38,7 +49,9 @@ export default function Home() {
         <LcarsPanel className="space-y-4">
           <h2 className="text-2xl font-bold text-lcars-orange">Destination Planning</h2>
           <div className="space-y-2">
-            <LcarsButton color="primary">Search Destinations</LcarsButton>
+            <LcarsButton color="primary" onClick={() => setShowRoutePlanner(!showRoutePlanner)}>
+              {showRoutePlanner ? 'Search Destinations' : 'Plan Route'}
+            </LcarsButton>
             <LcarsButton color="secondary">View Star Charts</LcarsButton>
           </div>
         </LcarsPanel>
@@ -52,19 +65,25 @@ export default function Home() {
         </LcarsPanel>
       </div>
 
-      <DestinationSearch onSearch={handleSearch} />
-      
-      {searchResults.length > 0 ? (
-        <DestinationList 
-          destinations={searchResults}
-          onSelect={handleDestinationSelect}
-        />
+      {showRoutePlanner ? (
+        <RoutePlanner defaultDestination={selectedDestination || undefined} />
       ) : (
-        <LcarsPanel>
-          <div className="text-center text-lcars-cream p-8">
-            Start your journey by searching for a destination
-          </div>
-        </LcarsPanel>
+        <>
+          <DestinationSearch onSearch={handleSearch} />
+          
+          {searchResults.length > 0 ? (
+            <DestinationList 
+              destinations={searchResults}
+              onSelect={handleDestinationSelect}
+            />
+          ) : (
+            <LcarsPanel>
+              <div className="text-center text-lcars-cream p-8">
+                Start your journey by searching for a destination
+              </div>
+            </LcarsPanel>
+          )}
+        </>
       )}
 
       {selectedDestination && (
@@ -76,17 +95,11 @@ export default function Home() {
 
       <LcarsPanel className="mt-6">
         <h2 className="text-2xl font-bold text-lcars-orange mb-4">Recent Destinations</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {["Risa", "Vulcan", "Earth"].map((destination) => (
-            <div
-              key={destination}
-              className="bg-black p-4 rounded-tl-2xl rounded-br-2xl border border-lcars-cream"
-            >
-              <h3 className="text-xl font-bold text-lcars-orange">{destination}</h3>
-              <p className="text-lcars-cream">Last visited: Stardate 47634.44</p>
-            </div>
-          ))}
-        </div>
+        <DestinationList 
+          destinations={recentDestinations}
+          onSelect={handleDestinationSelect}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+        />
       </LcarsPanel>
     </div>
   );

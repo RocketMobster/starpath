@@ -1,15 +1,15 @@
 # StarPath Development Roadmap
 
-## Current Version: 2.0.2
-Current features include LCARS-styled UI, basic destination database, search functionality with filters, and distance calculations.
+## Current Version: 2.1.0
+Current features include LCARS-styled UI, basic destination database, search functionality with filters, distance calculations, and route planning with reverse route comparison.
 
-## Phase 1: Core Travel Planning (v2.1.0)
+## Phase 1: Core Travel Planning (✓ Completed)
 Focus on essential travel planning functionality.
 
 ### Basic Trip Planning
-- [ ] Warp speed travel time calculator
-- [ ] Simple route planning
-- [ ] ETA calculations
+- [x] Warp speed travel time calculator
+- [x] Simple route planning with reverse route comparison
+- [x] ETA calculations
 - [ ] Basic journey requirements
 
 **Priority:** High
@@ -57,6 +57,8 @@ Add sophisticated planning and management tools.
 - [ ] Alternative route suggestions
 - [ ] Resource consumption estimates
 - [ ] Rest stop recommendations
+- [ ] Journey history tracking and recent destinations
+- [ ] Travel statistics and analytics
 
 **Priority:** Medium
 **Complexity:** High
